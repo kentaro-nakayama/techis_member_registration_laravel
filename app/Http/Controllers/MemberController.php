@@ -7,10 +7,17 @@ use App\Models\Member;
 
 class MemberController extends Controller
 {
-    public function index() {
-        // 会員情報を取得
-        $members = Member::all();
-        return view('index', compact('members'));
+    public function index(Request $request) {
+        // 会員情報を取得（名前・電話番号・メールアドレスで部分一致検索）
+        $keyword = $request->query('keyword');
+
+        $members = Member::when($keyword, function ($query, $keyword) {
+            $query->where('name', 'like', "%{$keyword}%")
+                ->orWhere('phone_number', 'like', "%{$keyword}%")
+                ->orWhere('email', 'like', "%{$keyword}%");
+        })->get();
+
+        return view('index', compact('members', 'keyword'));
     }
 
     public function showCreate() {

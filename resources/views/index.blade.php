@@ -8,6 +8,18 @@
     </div>
 </div>
 <a href="{{ url('/create') }}" class="btn btn-primary mb-3">Register new member</a>
+
+<!-- 名前・電話番号・メールアドレスで部分一致検索 -->
+<form action="{{ url('/') }}" method="GET" class="mb-3">
+    <div class="input-group">
+        <input type="text" name="keyword" value="{{ $keyword }}" class="form-control" placeholder="Search by name, phone number or email">
+        <button type="submit" class="btn btn-outline-secondary">Search</button>
+        @if ($keyword)
+        <a href="{{ url('/') }}" class="btn btn-outline-secondary">Clear</a>
+        @endif
+    </div>
+</form>
+
 <!-- 会員情報を一覧表示 -->
 @if (count($members) > 0)
 <table class="table table-striped text-center align-middle">
